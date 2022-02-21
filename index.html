@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="paintingArea"></canvas>
+    <script>
+        var canvas = document.getElementById("paintingArea");
+        canvas.width = document.documentElement.clientWidth;
+        canvas.height = document.documentElement.clientHeight;
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'black';
+        ctx.lineWidth = 10;
+        ctx.lineCap = 'round';
+        let painting = false;
+        let lastX;
+        let lastY;
+        let isSupportTouch = 'ontouchstart' in document.documentElement;
+
+        if (isSupportTouch) {
+            canvas.ontouchstart = (e) => {
+                lastX = e.touches[0].clientX;
+                lastY = e.touches[0].clientY;
+                painting = true;
+            }
+            canvas.ontouchend = () => {
+                painting = false;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.beginPath();
+            }
+            canvas.ontouchmove = (e) => {
+                if (painting === true) {
+                    ctx.beginPath();
+                    ctx.moveTo(e.touches[0].clientX, e.touches[0].clientY);
+                    ctx.lineTo(lastX, lastY);
+                    ctx.stroke();
+                    lastX = e.touches[0].clientX;
+                    lastY = e.touches[0].clientY;
+                }
+            }
+        } else {
+            canvas.onmousedown = (e) => {
+                lastX = e.clientX;
+                lastY = e.clientY;
+                painting = true;
+            }
+            canvas.onmouseup = () => {
+                painting = false;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.beginPath();
+            }
+            canvas.onmousemove = (e) => {
+                if (painting === true) {
+                    ctx.beginPath();
+                    ctx.moveTo(e.clientX, e.clientY);
+                    ctx.lineTo(lastX, lastY);
+                    ctx.stroke();
+                    lastX = e.clientX;
+                    lastY = e.clientY;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

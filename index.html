@@ -4,14 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,
+initial-scale=1,minimum-scale=1,maximum-scale=1,
+user-scalable=no,viewport-fit=cover">
     <title>canvas</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
     <canvas id="paintingArea"></canvas>
+    <button id="btn">reset</button>
+    <span></span>
     <script>
         var canvas = document.getElementById("paintingArea");
         canvas.width = document.documentElement.clientWidth * .95;
@@ -33,8 +36,6 @@
             }
             canvas.ontouchend = () => {
                 painting = false;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.beginPath();
             }
             canvas.ontouchmove = (e) => {
                 if (painting === true) {
@@ -54,8 +55,6 @@
             }
             canvas.onmouseup = () => {
                 painting = false;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.beginPath();
             }
             canvas.onmousemove = (e) => {
                 if (painting === true) {
@@ -67,6 +66,11 @@
                     lastY = e.clientY;
                 }
             }
+        }
+        var btn = document.getElementById('btn');
+        btn.onclick = function () {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
         }
     </script>
 </body>
